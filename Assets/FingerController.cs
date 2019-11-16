@@ -11,8 +11,8 @@ public class FingerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        portName = ""; // Enter the port name here from Tools > Port
-        serial = new SerialPort(portName,9600);
+        portName = "COM6"; // Enter the port name here from Tools > Port
+        serial = new SerialPort(portName, 9600);
         serial.Open();
     }
 
@@ -21,6 +21,7 @@ public class FingerController : MonoBehaviour
     {
         print(serial.ReadLine());
         float bendAngle = float.Parse(serial.ReadLine());
-        print(bendAngle + 100.0f);
+        print(bendAngle);
+        transform.eulerAngles = new Vector3(-90f, -bendAngle, 0);
     }
 }
