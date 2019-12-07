@@ -13,7 +13,7 @@ public class FingerController : MonoBehaviour
     int baudRate;
     string arduinoMessage;
     string[] splitMessage;
-    float[] bendAngle;
+    int[] bendAngle = new int[5];
 
     SerialPort serial;
     Thread thread;
@@ -22,11 +22,10 @@ public class FingerController : MonoBehaviour
 
     void Start()
     {
-        portName = "/dev/cu.usbmodem146101"; // Enter the port name here from Tools > Port
+        portName = "/dev/cu.usbserial-DA00VVV6"; // Enter the port name here from Tools > Port
         baudRate = 9600;
 
         serial = new SerialPort(portName, baudRate);
-        serial.ReadTimeout = 50;
         serial.Open(); // Open port for serial communication
 
         // StartThread();
@@ -35,25 +34,38 @@ public class FingerController : MonoBehaviour
     void Update()
     {
         arduinoMessage = serial.ReadLine();
-        splitMessage = arduinoMessage.Split(','); // split message into multiple bend angles
 
-        for (int i = 1; i <= 5; i++)
+        
+        splitMessage = arduinoMessage.Split(','); // split message into multiple bend angles
+        bendAngle[0] = int.Parse(splitMessage[0]);
+        bendAngle[1] = int.Parse(splitMessage[1]);
+        bendAngle[2] = int.Parse(splitMessage[2]);
+        bendAngle[3] = int.Parse(splitMessage[3]);
+        bendAngle[4] = int.Parse(splitMessage[4]);
+        
+
+        
+        for (int i = 0; i < 5; i++)
         {
-            bendAngle[i] = float.Parse(splitMessage[i]);
+
+
 
             // Distal phalanx (top joint) bends 2x as much as middle joint
-            if (gameObject.CompareTag("top") && transform.name == "finger" + i)
+            if (transform.name == "finger" + i && gameObject.CompareTag("top"))
             {
                 transform.eulerAngles = new Vector3(-bendAngle[i], 0, 0);
             }
 
             // Middle phalanx (middle joint) bends 1/2 the angle of top joint
-            if (gameObject.CompareTag("mid") && transform.name == "finger" + i)
+            if (transform.name == "finger" + i && gameObject.CompareTag("mid"))
             {
-                bendAngle[i] *= 0.5f; // reduce bend angle by a half since the mid portion bends twice less than top
+                bendAngle[i] /= 2; // reduce bend angle by a half since the mid portion bends twice less than top
                 transform.eulerAngles = new Vector3(-bendAngle[i], 0, 0);
             }
         }
+        
+        
+
     }
 
     /*
