@@ -6,6 +6,7 @@ TagManager:
   tags:
   - top
   - mid
+  - Ball
   layers:
   - Default
   - TransparentFX

@@ -23,7 +23,7 @@ public class FingerController : MonoBehaviour
     void Start()
     {
         portName = "/dev/cu.usbserial-DA00VVV6"; // Enter the port name here from Tools > Port
-        baudRate = 9600;
+        baudRate = 57600;
 
         serial = new SerialPort(portName, baudRate);
         serial.Open(); // Open port for serial communication
@@ -34,37 +34,46 @@ public class FingerController : MonoBehaviour
     void Update()
     {
         arduinoMessage = serial.ReadLine();
-
         
+
         splitMessage = arduinoMessage.Split(','); // split message into multiple bend angles
+        /*
         bendAngle[0] = int.Parse(splitMessage[0]);
-        bendAngle[1] = int.Parse(splitMessage[1]);
-        bendAngle[2] = int.Parse(splitMessage[2]);
-        bendAngle[3] = int.Parse(splitMessage[3]);
-        bendAngle[4] = int.Parse(splitMessage[4]);
-        
 
-        
-        for (int i = 0; i < 5; i++)
+        // For thumb
+        if (transform.name == "finger0" && gameObject.CompareTag("top"))
         {
+            transform.eulerAngles = new Vector3(bendAngle[0] + 90, 0, 0);
+        }
 
+        // Middle phalanx (middle joint) bends 1/2 the angle of top joint
+        if (transform.name == "finger0" && gameObject.CompareTag("mid"))
+        {
+            bendAngle[0] /= 2; // reduce bend angle by a half since the mid portion bends twice less than top
+            transform.eulerAngles = new Vector3(bendAngle[0] + 90, 0, -37.116f);
+        }
+        */
 
+        for (int i = 1; i < 5; i++)
+        {
+            bendAngle[i] = int.Parse(splitMessage[i]);
+            bendAngle[i] *= 3;
 
             // Distal phalanx (top joint) bends 2x as much as middle joint
             if (transform.name == "finger" + i && gameObject.CompareTag("top"))
             {
-                transform.eulerAngles = new Vector3(-bendAngle[i], 0, 0);
+                transform.eulerAngles = new Vector3(-bendAngle[i] + 90, 0, 0);
             }
 
             // Middle phalanx (middle joint) bends 1/2 the angle of top joint
             if (transform.name == "finger" + i && gameObject.CompareTag("mid"))
             {
                 bendAngle[i] /= 2; // reduce bend angle by a half since the mid portion bends twice less than top
-                transform.eulerAngles = new Vector3(-bendAngle[i], 0, 0);
+                transform.eulerAngles = new Vector3(-bendAngle[i] + 90, 0, 0);
             }
         }
-        
-        
+
+        // print(Time.deltaTime);
 
     }
 
