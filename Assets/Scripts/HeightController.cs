@@ -23,7 +23,6 @@ public class HeightController : MonoBehaviour
             // translate down and localScale up
 
             transform.position += new Vector3(0, -heightChangeRate, 0);
-            transform.localScale += new Vector3(0, heightChangeRate, 0);
         }
 
         if (Input.GetButton("Up"))
@@ -31,7 +30,6 @@ public class HeightController : MonoBehaviour
             // translate down and localScale up
 
             transform.position += new Vector3(0, heightChangeRate, 0);
-            transform.localScale += new Vector3(0, -heightChangeRate, 0);
         }
 
         hInput = Input.GetAxis("Horizontal");

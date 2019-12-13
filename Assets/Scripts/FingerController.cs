@@ -56,7 +56,7 @@ public class FingerController : MonoBehaviour
 
         for (int i = 1; i < 5; i++)
         {
-            bendAngle[i] = int.Parse(splitMessage[i]);
+            bendAngle[i] = int.Parse(splitMessage[i - 1]);
             bendAngle[i] *= 3;
 
             // Distal phalanx (top joint) bends 2x as much as middle joint

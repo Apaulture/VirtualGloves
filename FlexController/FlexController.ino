@@ -99,8 +99,8 @@ void loop()
 
   
 
-  Serial.print(thumb_angle);
-  Serial.print(",");
+  // Serial.print(thumb_angle);
+  // Serial.print(",");
   Serial.print(index_angle);
   Serial.print(",");
   Serial.print(mid_angle);

@@ -12,6 +12,7 @@ public class PointController : MonoBehaviour
     void Start()
     {
         score = 0;
+        text.text = score.ToString();
     }
 
     // Update is called once per frame
@@ -24,8 +25,9 @@ public class PointController : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Ball"))
         {
-            score++;
             text.text = score.ToString();
+            score++;
+            
             
         }
     }
